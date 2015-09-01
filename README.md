@@ -11,21 +11,7 @@ Requires Python and PsotgreSQL to be installed
 Execute the tournament_test.py file
 
 ## Tests
-tournament_test.py contains a list of  unit tests to test functions that registers players, deletes table contents, counts number of registered players,
-displays sorted winners scoreboard andgenerates pairs based on swiss pairing technique.
-
-The list of unit tests for this project are-
-
-if __name__ == '__main__':
-    testDeleteMatches()
-    testDelete()
-    testCount()
-    testRegister()
-    testRegisterCountDelete()
-    testStandingsBeforeMatches()
-    testReportMatches()
-    testPairings()
-    print "Success!  All tests pass!"
+tournament_test.py contains a list of  unit tests to test functions that registers players, deletes table contents, counts number of registered players, displays sorted winners scoreboard and generates pairs based on swiss pairing technique.
 
 ## Credits
 Udacity's Full Stack Nanodegree provided the code skeleton to implement this project
