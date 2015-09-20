@@ -6,8 +6,12 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
+-- drop database in case of any duplicate database name
+DROP DATABASE IF EXISTS tournament;
+-- create database 
+CREATE DATABASE tournament;
 --players is designed to hold just the players registering and assigning them with unique ID
-CREATE TABLE players ( id SERIAL,
+CREATE TABLE players ( id SERIAL PRIMARY KEY,
                        name TEXT );
 
 --matches is designed to give unique ID to every match played and stores the id of winner and loser
