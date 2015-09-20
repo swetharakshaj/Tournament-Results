@@ -6,16 +6,21 @@
 import psycopg2
 
 
-def connect():
+def connect(database_name="tournament"):
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        return(psycopg2.connect("dbname={}".format(database_name)))
+    except:
+        print("Error connecting to database. Try again!")
+
 
 
 def deleteMatches():
     """Remove all the match records from the database."""
     DB = connect()
     c = DB.cursor()
-    c.execute("DELETE FROM matches")
+    query = "DELETE FROM matches"
+    c.execute(query)
     DB.commit()
     DB.close()
 
@@ -24,7 +29,8 @@ def deletePlayers():
     """Remove all the player records from the database."""
     DB = connect()
     c = DB.cursor()
-    c.execute("DELETE FROM players")
+    query = "DELETE FROM players"
+    c.execute(query)
     DB.commit()
     DB.close()
 
@@ -32,7 +38,8 @@ def deleteScoreboard():
     """Remove all the scoreboard records from the database"""
     DB = connect()
     c= DB.cursor()
-    c.execute("DELETE FROM scoreboard")
+    query = "DELETE FROM scoreboard"
+    c.execute(query)
     DB.commit()
     DB.close()
 
@@ -40,10 +47,9 @@ def countPlayers():
     """Returns the number of players currently registered."""
     DB = connect()
     c = DB.cursor()
-    c.execute("SELECT COUNT (*) FROM players")
-    rows = c.fetchall()
-    for row in rows:
-        return row[0]
+    query = "SELECT COUNT (*) FROM players"
+    c.execute(query)
+    return c.fetchone()[0]
     DB.close()
 
 
@@ -169,12 +175,14 @@ def swissPairings():
     pairsMatched = []
 
     numOfPlayers = countPlayers()
+    if numOfPlayers%2 == 0:
     #assuming # of players to be even
-    while len(pStanding) > 1:
-        rightMatch = validPairId(0, 1, pStanding)
-        player1 = pStanding.pop(0)
-        player2 = pStanding.pop(rightMatch - 1)
-        pairsMatched.append((player1[0],player1[1],player2[0],player2[1]))
-    return pairsMatched
-
+        while len(pStanding) > 1:
+            rightMatch = validPairId(0, 1, pStanding)
+            player1 = pStanding.pop(0)
+            player2 = pStanding.pop(rightMatch - 1)
+            pairsMatched.append((player1[0],player1[1],player2[0],player2[1]))
+        return pairsMatched
+    else:
+        return "Number of players is odd"
 
