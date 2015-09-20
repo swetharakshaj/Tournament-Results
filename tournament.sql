@@ -15,7 +15,7 @@ CREATE TABLE players ( id SERIAL PRIMARY KEY,
                        name TEXT );
 
 --matches is designed to give unique ID to every match played and stores the id of winner and loser
-CREATE TABLE matches ( matchid SERIAL,
+CREATE TABLE matches ( matchid SERIAL PRIMARY KEY,
                        winner INTEGER,
                        loser INTEGER );                      
 

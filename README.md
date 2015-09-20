@@ -13,10 +13,17 @@ tournament_test.py contains a list of  unit tests to test functions that registe
 ## Usage
 To execute the project follow these steps in order.
 
-Clone the repository to a local machine.
-In the commandline, navigate to the cloned reporsitory folder. 
-To build and access the database we run 'psql' followed by '\i tournament.sql'. 
-To run the series of tests defined in test suite, run the tournament_test program from the command line using the command 'python tournament_test.py'.
+1. Clone the repository to a local machine.
+2. In the commandline, navigate to the cloned reporsitory folder. 
+3. Setting up the database can be done in 2 ways
+Way 1 -Refer to tournament.sql and execute the commands in the file on Git Bash. For example..
+      vagrant@trusty32: vagrant => CREATE DATABASE tournament;
+      vagrant@trusty32: vagrant => \c tournament;
+      vagrant@trusty32: tournament =>
+  Once we have created a database, we can add the tables that we will be working with as in the "CREATE TABLE" commans in      tournament.sql file.
+Way 2 - Since we have all the commands tournament.sql file already, we could execute by running run
+vagrant@trusty32: psql => \i tournament.sql
+4. To run the series of tests defined in test suite, run the tournament_test program from the command line using the command 'python tournament_test.py'.
 
 ## Credits
 Udacity's Full Stack Nanodegree provided the code skeleton to implement this project
