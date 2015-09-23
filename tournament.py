@@ -88,8 +88,9 @@ def playerStandings():
     """ 
     DB = connect()
     c = DB.cursor()
+	c.execute ()
     sql = """SELECT s.player, p.name, (SELECT COUNT(winner) AS numOfWins FROM matches WHERE winner = s.player), s.matches
-                 FROM scoreboard AS s
+	             FROM scoreboard AS s
                  INNER JOIN players AS p on p.id = s.player
                  ORDER BY numOfWins DESC"""
     c.execute(sql)
@@ -176,7 +177,8 @@ def swissPairings():
 
     numOfPlayers = countPlayers()
     if numOfPlayers%2 == 0:
-    #assuming # of players to be even
+    #checking for even & odd number of players
+	#code for handling odd number of players not in place yet. So, just an error msg displayed for now
         while len(pStanding) > 1:
             rightMatch = validPairId(0, 1, pStanding)
             player1 = pStanding.pop(0)
