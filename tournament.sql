@@ -23,4 +23,7 @@ CREATE TABLE matches ( matchid SERIAL PRIMARY KEY,
 CREATE TABLE scoreboard ( player INTEGER,
                           score INTEGER,
                           matches INTEGER );
+--Command to connect to database using psql
+\c tournament;
+
                         
