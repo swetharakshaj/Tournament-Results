@@ -88,8 +88,7 @@ def playerStandings():
     """ 
     DB = connect()
     c = DB.cursor()
-	c.execute ()
-    sql = """SELECT s.player, p.name, (SELECT COUNT(winner) AS numOfWins FROM matches WHERE winner = s.player), s.matches
+	sql = """SELECT s.player, p.name, (SELECT COUNT(winner) AS numOfWins FROM matches WHERE winner = s.player), s.matches
 	             FROM scoreboard AS s
                  INNER JOIN players AS p on p.id = s.player
                  ORDER BY numOfWins DESC"""
