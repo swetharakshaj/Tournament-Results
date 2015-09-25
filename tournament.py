@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# 
+#
 # tournament.py -- implementation of a Swiss-system tournament
 #
 
@@ -12,7 +12,6 @@ def connect(database_name="tournament"):
         return(psycopg2.connect("dbname={}".format(database_name)))
     except:
         print("Error connecting to database. Try again!")
-
 
 
 def deleteMatches():
@@ -34,14 +33,16 @@ def deletePlayers():
     DB.commit()
     DB.close()
 
+
 def deleteScoreboard():
     """Remove all the scoreboard records from the database"""
     DB = connect()
-    c= DB.cursor()
+    c = DB.cursor()
     query = "DELETE FROM scoreboard"
     c.execute(query)
     DB.commit()
     DB.close()
+
 
 def countPlayers():
     """Returns the number of players currently registered."""
@@ -55,11 +56,10 @@ def countPlayers():
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
+      The database assigns a unique serial id number for the player.  (This
+      should be handled by your SQL database schema, not in your Python code.)
   
-    The database assigns a unique serial id number for the player.  (This
-    should be handled by your SQL database schema, not in your Python code.)
-  
-    Args:
+  Args:
       name: the player's full name (need not be unique).
     """
     DB = connect()
@@ -68,7 +68,7 @@ def registerPlayer(name):
     scoreboard = "INSERT INTO scoreboard (player,score,matches) VALUES (%s,%s,%s)"
     c.execute(player, (name,))
     playerid = c.fetchone()[0]
-    c.execute(scoreboard, (playerid,0,0))
+    c.execute(scoreboard, (playerid, 0, 0))
     DB.commit()
     DB.close()
 
@@ -85,11 +85,11 @@ def playerStandings():
         name: the player's full name (as registered)
         wins: the number of matches the player has won
         matches: the number of matches the player has played
-    """ 
+    """
     DB = connect()
     c = DB.cursor()
-	sql = """SELECT s.player, p.name, (SELECT COUNT(winner) AS numOfWins FROM matches WHERE winner = s.player), s.matches
-	             FROM scoreboard AS s
+    sql = """SELECT s.player, p.name, (SELECT COUNT(winner) AS numOfWins FROM matches WHERE winner = s.player), s.matches
+                 FROM scoreboard AS s
                  INNER JOIN players AS p on p.id = s.player
                  ORDER BY numOfWins DESC"""
     c.execute(sql)
@@ -120,6 +120,7 @@ def reportMatch(winner, loser):
     DB.commit()
     DB.close()
 
+
 def isPairValid(p1, p2):
     """Checks if two players played against each other already
     Args:
@@ -140,6 +141,7 @@ def isPairValid(p1, p2):
         return False
     return True
 
+
 def validPairId(id1, id2, pStanding):
     """Checks if 2 players played against each other already
     If they did, find a valid match
@@ -155,7 +157,8 @@ def validPairId(id1, id2, pStanding):
         return id2
     else:
         return validPairId(id1, (id2 + 1), pStanding)
- 
+
+
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
   
@@ -163,8 +166,8 @@ def swissPairings():
     appears exactly once in the pairings.  Each player is paired with another
     player with an equal or nearly-equal win record, that is, a player adjacent
     to him or her in the standings.
-  
-    Returns:
+
+Returns:
       A list of tuples, each of which contains (id1, name1, id2, name2)
         id1: the first player's unique id
         name1: the first player's name
@@ -173,17 +176,15 @@ def swissPairings():
     """
     pStanding = playerStandings()
     pairsMatched = []
-
     numOfPlayers = countPlayers()
-    if numOfPlayers%2 == 0:
-    #checking for even & odd number of players
-	#code for handling odd number of players not in place yet. So, just an error msg displayed for now
+    if numOfPlayers % 2 == 0:
+    # checking for even & odd number of players
+    # code for handling odd number of players not in place yet. So, just an error msg displayed for now
         while len(pStanding) > 1:
             rightMatch = validPairId(0, 1, pStanding)
             player1 = pStanding.pop(0)
             player2 = pStanding.pop(rightMatch - 1)
-            pairsMatched.append((player1[0],player1[1],player2[0],player2[1]))
+            pairsMatched.append((player1[0], player1[1], player2[0], player2[1]))
         return pairsMatched
     else:
-        return "Number of players is odd"
-
+        return "Number of players is odd"    
